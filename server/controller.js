@@ -173,6 +173,9 @@ module.exports = {
                 city_id serial primary key,
                 name varchar, rating integer, country_id integer
                 );
+            insert into cities (name, rating, country_id) values ('New York', 5, 186), 
+            ('Paris', 5, 60),
+            ('Canberra', 5, 9);
             insert into countries (name)
                 values ('Afghanistan'),
                      ('Albania'),
@@ -389,7 +392,7 @@ module.exports = {
             .catch(err=>res.status(500).send(err))
         },
         createCity:(req,res)=>{
-            const{name,rating, country_Id} =req.body;
+            const{name,rating, country_id} =req.body;
             sequelize.query(
                 `
                 Insert into cities(name,rating,country_id) values ('${name}','${rating}','${country_id}') returning *;`
@@ -410,6 +413,7 @@ module.exports = {
             From cities as c
             join countries as o
             on c.country_id=o.country_id
+            order by c.rating desc
             `)
             .then(dbRes=>res.status(200).send(dbRes[0]))
             .catch(err=>res.status(500).send(err))
