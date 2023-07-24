@@ -171,7 +171,7 @@ module.exports = {
                 );
             create table cities(
                 city_id serial primary key,
-                name varchar, rating integer, country_id integer
+                name varchar, rating integer, country_id integer references countries(country_id) unique (country_id)
                 );
             insert into cities (name, rating, country_id) values ('New York', 5, 186), 
             ('Paris', 5, 60),
@@ -386,7 +386,7 @@ module.exports = {
             },
         getCountries:(req,res)=>{
             sequelize.query(`
-            SELECT name from countries;
+            SELECT * from countries;
             `)
             .then(dbRes=>res.status(200).send(dbRes[0]))
             .catch(err=>res.status(500).send(err))
@@ -418,7 +418,7 @@ module.exports = {
             .then(dbRes=>res.status(200).send(dbRes[0]))
             .catch(err=>res.status(500).send(err))
         },
-        deleteCities:(req,res)=>{
+        deleteCity:(req,res)=>{
             const {id}= req.params
             sequelize.query(`
             Delete from cities
