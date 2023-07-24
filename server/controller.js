@@ -409,11 +409,11 @@ module.exports = {
         getCities:(req,res)=>{
             sequelize.query(`
             Select
-            c.city_id, c.name as city, o.country_id,o.name as country
-            From cities as c
-            join countries as o
-            on c.country_id=o.country_id
-            order by c.rating desc
+            cities.city_id, cities.name as city, countries.country_id, countries.name as country
+            From cities
+            join countries
+            on cities.country_id=countries.country_id
+            order by cities.rating desc
             `)
             .then(dbRes=>res.status(200).send(dbRes[0]))
             .catch(err=>res.status(500).send(err))
