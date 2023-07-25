@@ -33,6 +33,13 @@ function deleteCard(id) {
         .catch(err => console.log(err))
 }
 
+function updateCity(id, rating, type){
+    let body = {rating, type}
+    axios.put(`http://localhost:4004/cities/${id}`,body)
+    .then(()=>getCities())
+    .catch(err=>console.log(err))
+}
+
 function getCities() {
     countryList.innerHTML = ''
 
@@ -40,8 +47,8 @@ function getCities() {
         .then(res => {
             res.data.forEach(elem => {
                 let countryCard = `<div class="country-card">
-                    <h2>${elem.city}, ${elem.country}</h2>
-                    <h3>Rating: ${elem.rating}/5</h3>
+                    <h2>${elem.city}, ${elem.country}</h2><h3>Rating: ${elem.rating}/5</h3><button onclick="updateCity(${elem['city_id']}, ${elem.rating}, 'minus')">-</button><button onclick="updateCity(${elem['city_id']}, ${elem.rating}, 'plus')">+</button>
+                    
                     <button onclick="deleteCard(${elem['city_id']})">Delete</button>
                     </div>
                 `

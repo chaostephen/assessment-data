@@ -369,8 +369,8 @@ module.exports = {
                 ('Yemen'),
                 ('Zambia'),
                 ('Zimbabwe');
-                insert into cities (name, rating, country_id) values ('New York', 5, 186), 
-                ('Paris', 5, 60),
+                insert into cities (name, rating, country_id) values ('New York', 5, 187), 
+                ('Paris', 5, 61),
                 ('Canberra', 5, 9);
                 `
                 )
@@ -415,6 +415,24 @@ module.exports = {
             on cities.country_id=countries.country_id
             order by cities.rating desc
             `)
+            .then(dbRes=>res.status(200).send(dbRes[0]))
+            .catch(err=>res.status(500).send(err))
+        },
+        updateCity: (req,res)=>{
+            const {id}=req.params
+            let {rating,type} = req.body;
+            if(type==='plus'){
+                if(rating<5){
+                    rating++;
+                }
+            } else if (type==='minus'){
+                if(rating>1){
+                    rating--;
+                }
+            }
+            sequelize.query(`
+            Update cities
+            SET rating = ${rating} where city_id = ${id} `)
             .then(dbRes=>res.status(200).send(dbRes[0]))
             .catch(err=>res.status(500).send(err))
         },
